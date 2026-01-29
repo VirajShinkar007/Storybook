@@ -48,7 +48,7 @@ export function TextField({
         <p
           id={errorId}
           role="alert"
-          className="text-sm text-red-600"
+          className="text-sm text-blue-600"
         >
           {error}
         </p>
