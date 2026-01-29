@@ -6,13 +6,11 @@
     "module": "ESNext",
     "skipLibCheck": true,
 
-    /* 🔒 STRICT MODE (NON-NEGOTIABLE) */
     "strict": true,
     "noImplicitAny": true,
     "strictNullChecks": true,
     "noUncheckedIndexedAccess": true,
 
-    /* Vite / React */
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
@@ -20,5 +18,11 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
-  "include": ["src"]
+  "include": ["src"],
+  "exclude": [
+    "**/*.stories.ts",
+    "**/*.stories.tsx",
+    "src/stories",
+    ".storybook"
+  ]
 }

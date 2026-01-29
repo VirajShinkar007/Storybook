@@ -28,57 +28,62 @@ export function FormRenderer({ schema }: FormRendererProps) {
 
   return (
     <form className="space-y-4" onSubmit={handleSubmit}>
-      {schema.map((field) => {
-        const isVisible = evaluateConditions(field.visibleIf, values);
-        if (!isVisible) return null;
+  {schema.map((field) => {
+    // ✅ FIX: safely check visibleIf
+    const isVisible =
+      "visibleIf" in field
+        ? evaluateConditions(field.visibleIf, values)
+        : true;
 
-        if (field.type === "text") {
-          return (
-            <TextField
-              key={field.name}
-              field={field}
-              value={values[field.name]}
-              error={errors[field.name]}
-              onChange={(value) => setValue(field.name, value)}
-            />
-          );
-        }
+    if (!isVisible) return null;
 
-        if (field.type === "select") {
-          return (
-            <SelectField
-              key={field.name}
-              field={field}
-              value={values[field.name]}
-              error={errors[field.name]}
-              onChange={(value) => setValue(field.name, value)}
-            />
-          );
-        }
+    if (field.type === "text") {
+      return (
+        <TextField
+          key={field.name}
+          field={field}
+          value={values[field.name]}
+          error={errors[field.name]}
+          onChange={(value) => setValue(field.name, value)}
+        />
+      );
+    }
 
-        if (field.type === "repeat") {
-          return (
-            <Repeater
-              key={field.name}
-              field={field}
-              values={values[field.name]}
-              onChange={(updatedItems) =>
-                setValue(field.name, updatedItems)
-              }
-            />
-          );
-        }
+    if (field.type === "select") {
+      return (
+        <SelectField
+          key={field.name}
+          field={field}
+          value={values[field.name]}
+          error={errors[field.name]}
+          onChange={(value) => setValue(field.name, value)}
+        />
+      );
+    }
 
-        return null;
-      })}
+    if (field.type === "repeat") {
+      return (
+        <Repeater
+          key={field.name}
+          field={field}
+          values={values[field.name]}
+          onChange={(updatedItems) =>
+            setValue(field.name, updatedItems)
+          }
+        />
+      );
+    }
 
-      {/* Submit Button */}
-      <button
-        type="submit"
-        className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
-      >
-        Submit
-      </button>
-    </form>
+    return null;
+  })}
+
+  <button
+    type="submit"
+    className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+  >
+    Submit
+  </button>
+</form>
+
   );
 }

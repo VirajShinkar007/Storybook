@@ -14,12 +14,13 @@ export function validateForm(
   const errors: FormErrors = {};
 
   schema.forEach((field) => {
-    if (field.type === "repeat") return;
+    // ✅ Skip repeat / group fields completely
+    if (field.type === "repeat" || field.type === "group") return;
 
     const value = values[field.name];
 
-    // Required check
-    if (field.required) {
+    // ✅ Narrow fields that support `required` + `label`
+    if ("required" in field && field.required) {
       const isEmpty =
         value === undefined ||
         value === null ||
@@ -31,9 +32,13 @@ export function validateForm(
       }
     }
 
-    // Email format check
-    if (field.type === "text" && field.name === "email") {
-      if (typeof value === "string" && !emailRegex.test(value)) {
+    // ✅ Email validation (only for text fields)
+    if (
+      field.type === "text" &&
+      field.name === "email" &&
+      typeof value === "string"
+    ) {
+      if (!emailRegex.test(value)) {
         errors[field.name] = "Please enter a valid email address";
       }
     }
