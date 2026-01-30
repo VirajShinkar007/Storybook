@@ -5,7 +5,7 @@ import { useState } from "react";
 import { Repeater } from "./Repeater";
 
 const meta: Meta<typeof Repeater> = {
-  title: "Components/Repeater",
+  title: "components/Repeater",
   component: Repeater,
 };
 
